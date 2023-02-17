@@ -1,0 +1,71 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load humanize %} <!-- "load humanize" makes numbers to have commas -->
+{% load crispy_forms_tags %}
+{% block head %}
+    <title>Checkout</title>
+{% endblock head %}
+{% block content %}
+
+    <!--================Home Banner Area =================-->
+    <section class="banner_area">
+      <div class="banner_inner d-flex align-items-center">
+        <div class="container">
+          <div
+            class="banner_content d-md-flex justify-content-between align-items-center"
+          >
+            <div class="mb-3 mb-md-0">
+              <h2>Product Checkout</h2>
+              <p>Very us move be blessed multiply night</p>
+            </div>
+            <div class="page_link">
+              <a href="index.html">Home</a>
+              <a href="checkout.html">Product Checkout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--================End Home Banner Area =================-->
+
+    <!--================Checkout Area =================-->
+    <section class="checkout_area section_gap">
+      <div class="container">
+        <div class="billing_details">
+          <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9">
+              <div class="order_box">
+                <h2>Your Shipment Details</h2>
+                
+                   <form method="POST">
+                       {% csrf_token %}
+                            <div class="mt-10">
+                                <label for="email" class="">Email</label>
+                                                {{ form.email }}
+                            </div>
+                           
+                           <div class="mt-10">
+                               <label for="phone_no" class="">Phone Number</label>
+                                {{ form.phone_no }}
+                           </div>
+                       <hr>
+                        <button class="main_btn" type="submit" name="url 'core:payment'">Make Payment</button>
+                    </form>
+              </div>
+            </div>
+              <div class="col-lg-3 col-md-3 col-sm-3">
+                  {% include "main/order_snippet.html" %}
+                  <div class="row">
+                      <div class="col-md-12 col-sm-12 col-xs-12">
+                          <img src="{% static 'main/img/card-logos.jpg ' %}" alt="" style="width: 55%;">
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--================End Checkout Area =================-->
+
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load humanize %} <!-- "load humanize" makes numbers to have commas -->
+{% block head %}
+    <title>Order Summary</title>
+  {% endblock head %}
+{% block content %}
+
+    <!--================Home Banner Area =================-->
+    <section class="banner_area">
+      <div class="banner_inner d-flex align-items-center">
+        <div class="container">
+          <div
+            class="banner_content d-md-flex justify-content-between align-items-center"
+          >
+            <div class="mb-3 mb-md-0">
+              <h2>Order Summary</h2>
+            </div>
+            <div class="page_link">
+              <a href="index.html">Home</a>
+              <a href="checkout.html">Order Summary</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--================End Home Banner Area =================-->
+
+    <!--================Checkout Area =================-->
+    <section class="checkout_area section_gap">
+      <div class="container">
+        <div class="billing_details">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="order_box">
+                <div class="table-responsive text-nowrap">
+                <h2>Order Summary</h2>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Item </th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Total Item Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for order_item in object.items.all %}
+                      <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ order_item.item.title }}</td>
+                        <td>{{ order_item.item.price|intcomma }}</td>
+                          <td> <a href="{% url 'core:remove-single-item-from-cart' order_item.item.slug %}"><i style="color: #707070	;" class="fa fa-minus mr-2"></i></a>
+                            {{ order_item.quantity }}
+                            <a href="{% url 'core:add-to-cart' order_item.item.slug %}"><i style="color: #707070" class="fa fa-plus ml-2"></i></a>
+                        </td>
+                          <td>
+                              {% if order_item.item.discount_price %}
+                                {{ order_item.get_total_discount_item_price|intcomma }}
+                                <span class="label label-success ml-2">Saving &#x20A6; {{ order_item.get_amount_saved|intcomma }}</span>
+                              {% else %}
+                                &#x20A6; {{ order_item.get_total_item_price|intcomma }}
+                              {% endif %}
+                              <a style="color:red;" href="{% url 'core:remove-from-cart' order_item.item.slug %}">
+                                  <i class="fa fa-trash float-right"></i>
+                              </a>
+                          </td>
+                      </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">Your cart is empty</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <a class="btn btn-primary float-right" href="/">Continue shopping</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if object.get_total %}
+                    <tr >
+                        <td colspan="4" style="font-weight: bolder;">Order Total</td>
+                        <td style="font-weight: bolder;">&#x20A6; {{ object.get_total|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <a class="btn btn-success float-right ml-2" href="/checkout/">Proceed to payment</a>
+                            <a class="btn btn-primary float-right" href="/">Continue shopping</a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    </tbody>
+                  </table>
+        </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--================End Checkout Area =================-->
+{% endblock %}

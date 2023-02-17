@@ -1,0 +1,31 @@
+{% load humanize %} <!-- "load humanize" makes numbers to have commas -->
+
+<div class="panel panel-success">
+    <div class="panel-heading">YOUR ORDER ({{ order.items.count }} item)</div>
+      {% for order_item in order.items.all %}
+        <div class="panel-body">
+            <div class="media">
+                <div class="media-left">
+                  <img src="{{ order_item.item.image.url }}" class="media-object" style="width:60px">
+                </div>
+                <div class="media-body">
+                  <h4 class="media-heading">{{ order_item.item.title }}</h4>
+                  {% comment %}<p>{{ order_item.item.description|truncatechars:50 }}</p>{% endcomment %}
+                    <p>&#x20A6; {{ order_item.item.price|intcomma }} <br> Qty: {{ order_item.quantity }} </p>
+                </div>
+              </div>
+        </div>
+      {% endfor %}
+      <hr>
+      <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <h4><strong>Total</strong></h4>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <h4>&#x20A6; {{ order.get_total|intcomma }} </h4>
+            </div>
+        </div>
+      </div>
+  </div>

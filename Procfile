@@ -1,0 +1,1 @@
+web: gunicorn nedverlu_market.wsgi
